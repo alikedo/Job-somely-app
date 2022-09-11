@@ -16,7 +16,7 @@ function CandidateDetailsPage(props) {
     const getCandidate = () => {
         setMessage("");
         axios
-            .get(`${process.env.REACT_APP_API_URL}/candidates/${candidateId}`,
+            .get(`${process.env.REACT_APP_SERVER_URL}/candidates/${candidateId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then((response) => {
