@@ -164,23 +164,18 @@ router.post("/login", (req, res, next) => {
         })
 
         .catch((err) => {
-            // in this case we are sending the error handling to the error handling middleware that is defined in the error handling file
-            // you can just as easily run the res.status that is commented out below
+
             next(err);
-            // return res.status(500).render("login", { errorMessage: err.message });
+            return res.status(500).render("login", { errorMessage: err.message });
         });
 });
 
 
-// GET  /auth/verify  -  Used to verify JWT stored on the client
 router.get('/verify', isAuthenticated, (req, res, next) => {
 
-    // If JWT token is valid the payload gets decoded by the
-    // isAuthenticated middleware and made available on `req.payload`
     console.log(`req.payload`, req.payload);
 
-    // Send back the object with user data
-    // previously set as the token payload
+
     res.status(200).json(req.payload);
 });
 

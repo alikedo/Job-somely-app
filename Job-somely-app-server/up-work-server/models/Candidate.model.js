@@ -64,4 +64,4 @@ const candidateSchema = new Schema(
     }
 );
 
-module.exports = model('Candidate', candidateSchema); c
+module.exports = model('Candidate', candidateSchema);
