@@ -19,7 +19,7 @@ function EditJobPage(props) {
 
     useEffect(() => {
         axios
-            .get(`${process.env.REACT_APP_API_URL}/jobs/${jobId}`,
+            .get(`${process.env.REACT_APP_SERVER_URL}/jobs/${jobId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then((response) => {
@@ -36,7 +36,7 @@ function EditJobPage(props) {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        // Create an object representing the body of the PUT request
+
         const requestBody = {
             title: title,
             description: description,

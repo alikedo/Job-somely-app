@@ -15,7 +15,7 @@ function CandidatesListPage() {
 
   const getAllCandidates = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/candidates`,
+      .get(`${process.env.REACT_APP_SERVER_URL}/candidates`,
         { headers: { Authorization: `Bearer ${storedToken}` } }
       )
       .then((response) => setCandidates(response.data))

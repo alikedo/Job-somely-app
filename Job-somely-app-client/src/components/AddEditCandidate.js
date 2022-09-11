@@ -35,7 +35,7 @@ function AddEditCandidate(props) {
         uploadData.append("image", e.target.files[0]);
 
         axios
-            .post(`${process.env.REACT_APP_API_URL}/upload`, uploadData,
+            .post(`${process.env.REACT_APP_SERVER_URL}/upload`, uploadData,
                 { headers: { Authorization: `Bearer ${storedToken}` } })
             .then(response => {
                 // console.log("response is: ", response);
@@ -48,7 +48,7 @@ function AddEditCandidate(props) {
 
     const getCandidate = () => {
         axios
-            .get(`${process.env.REACT_APP_API_URL}/myprofile`,
+            .get(`${process.env.REACT_APP_SERVER_URL}/myprofile`,
                 { headers: { Authorization: `Bearer ${storedToken}` } })
             .then((response) => {
                 const oneCandidate = response.data;
@@ -96,7 +96,7 @@ function AddEditCandidate(props) {
         if (candidateId === "") {
             axios
                 .post(
-                    `${process.env.REACT_APP_API_URL}/candidates`,
+                    `${process.env.REACT_APP_SERVER_URL}/candidates`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
@@ -109,7 +109,7 @@ function AddEditCandidate(props) {
         } else {
             axios
                 .put(
-                    `${process.env.REACT_APP_API_URL}/candidates/${candidateId}`,
+                    `${process.env.REACT_APP_SERVER_URL}/candidates/${candidateId}`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
@@ -125,7 +125,7 @@ function AddEditCandidate(props) {
         // Make a DELETE request to delete the candidate
         axios
             .delete(
-                `${process.env.REACT_APP_API_URL}/candidates/${candidateId}`,
+                `${process.env.REACT_APP_SERVER_URL}/candidates/${candidateId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then(() => {

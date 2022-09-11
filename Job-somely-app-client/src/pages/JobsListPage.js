@@ -15,7 +15,7 @@ function JobsListPage() {
 
   const getAllJobs = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/jobs`,
+      .get(`${process.env.REACT_APP_SERVER_URL}/jobs`,
         { headers: { Authorization: `Bearer ${storedToken}` } }
       )
       .then((response) => setJobs(response.data))
@@ -28,7 +28,7 @@ function JobsListPage() {
   }, [storedToken]);
 
   const searchJob = () => {
-    axios.get(process.env.REACT_APP_API_URL + `/searchjob?q=${query}`,
+    axios.get(process.env.REACT_APP_SERVER_URL + `/searchjob?q=${query}`,
       { headers: { Authorization: `Bearer ${storedToken}` } })
       .then(response => {
         setJobs(response.data);
