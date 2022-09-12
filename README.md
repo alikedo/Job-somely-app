@@ -1,1 +1,0 @@
-# Job-somely-app

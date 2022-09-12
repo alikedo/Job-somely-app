@@ -9,6 +9,7 @@ function CandidateDetailsPage(props) {
     const [message, setMessage] = useState("");
     // Get the URL parameter `:candidateId` 
     const { candidateId } = useParams();
+    console.log(candidateId)
 
     const storedToken = localStorage.getItem("authToken");
 
@@ -16,7 +17,7 @@ function CandidateDetailsPage(props) {
     const getCandidate = () => {
         setMessage("");
         axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/candidates/${candidateId}`,
+            .get(`${process.env.REACT_APP_API_URL}/api/candidates/${candidateId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then((response) => {
