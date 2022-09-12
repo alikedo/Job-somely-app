@@ -33,6 +33,11 @@ const jobSchema = new Schema(
             ref: 'User',
             required: true,
         },
+        location: {
+            type: String,
+            required: true,
+            trim: true
+        },
         applicants: [{
             type: Schema.Types.ObjectId,
             ref: 'Candidate'
