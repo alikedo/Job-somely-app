@@ -14,7 +14,7 @@ function CompanyDetailsPage(props) {
 
     const getCompany = () => {
         axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/companies/${companyId}`,
+            .get(`${process.env.REACT_APP_SERVER_URL}/api/companies/${companyId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then((response) => {

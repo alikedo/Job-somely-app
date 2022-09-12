@@ -35,7 +35,7 @@ function AddEditCandidate(props) {
         uploadData.append("image", e.target.files[0]);
 
         axios
-            .post(`${process.env.REACT_APP_API_URL}/upload`, uploadData,
+            .post(`${process.env.REACT_APP_API_URL}/api/upload`, uploadData,
                 { headers: { Authorization: `Bearer ${storedToken}` } })
             .then(response => {
                 // console.log("response is: ", response);
@@ -48,11 +48,11 @@ function AddEditCandidate(props) {
 
     const getCandidate = () => {
         axios
-            .get(`${process.env.REACT_APP_API_URL}/myprofile`,
+            .get(`${process.env.REACT_APP_API_URL}/api/myprofile`,
                 { headers: { Authorization: `Bearer ${storedToken}` } })
             .then((response) => {
                 const oneCandidate = response.data;
-
+                console.log(oneCandidate)
                 if (typeof (oneCandidate._id) !== "undefined") {
                     setCandidateId(oneCandidate._id);
                 }
@@ -69,6 +69,7 @@ function AddEditCandidate(props) {
             })
             .catch((error) => console.log(error));
     };
+
 
     useEffect(() => {
         getCandidate();
@@ -96,25 +97,26 @@ function AddEditCandidate(props) {
         if (candidateId === "") {
             axios
                 .post(
-                    `${process.env.REACT_APP_API_URL}/candidates`,
+                    `${process.env.REACT_APP_API_URL}/api/candidates`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
                 .then((response) => {
                     const newCandidateId = response.data._id;
-                    console.log(response)
-                    navigate(`/candidates/${newCandidateId}`);
+                    // console.log(newCandidateId)
+                    navigate(`/api/candidates/${newCandidateId}`);
                 })
                 .catch((error) => console.log(error));
         } else {
             axios
                 .put(
-                    `${process.env.REACT_APP_API_URL}/candidates/${candidateId}`,
+                    `${process.env.REACT_APP_API_URL}/api/candidates/${candidateId}`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
                 .then((response) => {
                     const candidateId = response.data._id;
+                    console.log(candidateId)
                     navigate(`/candidates/${candidateId}`);
                 })
                 .catch((error) => console.log(error));
@@ -125,7 +127,7 @@ function AddEditCandidate(props) {
         // Make a DELETE request to delete the candidate
         axios
             .delete(
-                `${process.env.REACT_APP_API_URL}/candidates/${candidateId}`,
+                `${process.env.REACT_APP_API_URL}/api/candidates/${candidateId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then(() => {
