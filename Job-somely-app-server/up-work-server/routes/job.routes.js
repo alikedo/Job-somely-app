@@ -31,6 +31,7 @@ router.post('/jobs', isAuthenticated, (req, res, next) => {
         description: req.body.description,
         skills: req.body.skills,
         level: req.body.level,
+        location: req.body.location,
         owner: req.payload._id
     };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from 'react-bootstrap';
@@ -160,11 +160,11 @@ function AddJob(props) {
                                         className="bg-gradient text-white px-5 mb-4">Save Changes</Button>
                                 </div>
                             </Form>
-                            <div class="mapouter">
-                                <div class="gmap_canvas">
-                                    <iframe width="600" height="500" id="gmap_canvas" src={`https://maps.google.com/maps?q=${place}&t=&z=13&ie=UTF8&iwloc=&output=embed`} frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+
+                                <div>
+                                    <iframe width="600" height="500" id="gmap_canvas" src={`https://maps.google.com/maps?q=${place}&t=&z=13&ie=UTF8&iwloc=&output=embed`}>
                                         </iframe><a href="https://fmovies-online.net"></a>
-                                        </div></div>
+                                        </div>
                         </div>
                     </div>
                 </div>

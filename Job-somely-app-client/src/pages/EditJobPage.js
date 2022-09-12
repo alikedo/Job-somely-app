@@ -10,12 +10,15 @@ function EditJobPage(props) {
     const [description, setDescription] = useState("");
     const [skills, setSkills] = useState("");
     const [level, setLevel] = useState("");
+    const [location, setLocation] = useState("");
 
     const { jobId } = useParams();
     const navigate = useNavigate();
 
 
     const storedToken = localStorage.getItem("authToken");
+
+    const [place, setPlace] =useState(location);
 
     useEffect(() => {
         axios
@@ -29,6 +32,8 @@ function EditJobPage(props) {
                 setDescription(oneJob.description);
                 setSkills(oneJob.skills);
                 setLevel(oneJob.level);
+                setLocation(oneJob.location);
+                setPlace(oneJob.location)
             })
             .catch((error) => console.log(error));
 
@@ -41,7 +46,8 @@ function EditJobPage(props) {
             title: title,
             description: description,
             skills: skills,
-            level: level
+            level: level,
+            location: location
         };
 
         // Make a PUT request to update the job
@@ -149,6 +155,20 @@ function EditJobPage(props) {
                                         </div>
                                     </div>
                                 </div>
+
+                                <div className="row">
+                                    <div className="form-outline mb-4">
+                                        <div className="form-outline">
+                                            <label className="form-label">Location</label>
+                                            <input
+                                                type="text"
+                                                name="location"
+                                                value={location}
+                                                onChange={(e) => { setPlace(location);
+                                                    setLocation(e.target.value)}} className="form-control" required />
+                                        </div>
+                                    </div>
+                                </div>
                                 <div>
                                     <Button className="bg-gradient text-white px-3 mx-4 mb-4" variant="danger" onClick={deleteJob}>Delete The Job</Button>
                                     <Button type="submit"
@@ -157,6 +177,10 @@ function EditJobPage(props) {
                                 </div>
 
                             </Form>
+                            <div>
+                                    <iframe width="600" height="500" id="gmap_canvas" src={`https://maps.google.com/maps?q=${place}&t=&z=13&ie=UTF8&iwloc=&output=embed`} frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                                        </iframe><a href="https://fmovies-online.net"></a>
+                                        </div>
                         </div>
                     </div>
                 </div>
