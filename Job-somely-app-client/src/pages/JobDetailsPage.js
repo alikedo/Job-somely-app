@@ -17,6 +17,7 @@ function JobDetailsPage(props) {
     const { user } = useContext(AuthContext);
     const isOwner = (obj) => (typeof (user) !== 'undefined' && obj.owner === user._id)
 
+    const [place, setPlace] =useState('');
 
     const getJob = () => {
         axios
@@ -26,6 +27,7 @@ function JobDetailsPage(props) {
             .then((response) => {
                 const oneJob = response.data;
                 setJob(oneJob);
+                setPlace(oneJob.location)
             })
             .catch((error) => console.log(error));
     };
@@ -70,6 +72,7 @@ function JobDetailsPage(props) {
                                                 <p><strong>Company:</strong> {job.company.name}</p>
                                                 <p><strong>Level:</strong> {job.level}</p>
                                                 <p><strong>Skills:</strong> {job.skills}</p>
+                                                <p><strong>Location:</strong> {job.location}</p>
                                                 {isOwner(job) &&
                                                     <div className="pt-3">
                                                         <p><strong>Applicants:</strong></p>
@@ -107,6 +110,10 @@ function JobDetailsPage(props) {
                 </div>
             )
             }
+            <div>
+                                    <iframe width="600" height="500" id="gmap_canvas" src={`https://maps.google.com/maps?q=${place}&t=&z=13&ie=UTF8&iwloc=&output=embed`} frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                                        </iframe><a href="https://fmovies-online.net"></a>
+                                        </div>
         </div >
     );
 }
