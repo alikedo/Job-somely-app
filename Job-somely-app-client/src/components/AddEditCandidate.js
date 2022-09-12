@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from 'react-bootstrap';
+import { useContext } from "react";
+import { AuthContext } from "../context/auth.context"
 
 
 
@@ -52,7 +54,6 @@ function AddEditCandidate(props) {
                 { headers: { Authorization: `Bearer ${storedToken}` } })
             .then((response) => {
                 const oneCandidate = response.data;
-                console.log(oneCandidate)
                 if (typeof (oneCandidate._id) !== "undefined") {
                     setCandidateId(oneCandidate._id);
                 }
@@ -71,31 +72,34 @@ function AddEditCandidate(props) {
     };
 
 
+    // const {  user } = useContext(AuthContext);
+    // console.log(user)
+
     useEffect(() => {
         getCandidate();
         // eslint-disable-next-line
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setErrorMsg("");
 
         const requestBody = {
-            firstName: firstName,
-            lastName: lastName,
-            role: role,
-            email: email,
-            phone: phone,
-            location: location,
-            about: about,
-            skills: skills,
-            image: image,
-            linkedin: linkedin
+            firstName,
+            lastName,
+            role,
+            email,
+            phone,
+            location,
+            about,
+            skills,
+            image,
+            linkedin
         }
-
-        if (candidateId === "") {
-            axios
+        console.log(requestBody)
+       if (candidateId == '') {
+           await axios
                 .post(
                     `${process.env.REACT_APP_API_URL}/api/candidates`,
                     requestBody,
@@ -103,12 +107,12 @@ function AddEditCandidate(props) {
                 )
                 .then((response) => {
                     const newCandidateId = response.data._id;
-                    // console.log(newCandidateId)
+                    console.log(response.data)
                     navigate(`/api/candidates/${newCandidateId}`);
                 })
                 .catch((error) => console.log(error));
         } else {
-            axios
+           await axios
                 .put(
                     `${process.env.REACT_APP_API_URL}/api/candidates/${candidateId}`,
                     requestBody,
@@ -116,7 +120,7 @@ function AddEditCandidate(props) {
                 )
                 .then((response) => {
                     const candidateId = response.data._id;
-                    console.log(candidateId)
+                    
                     navigate(`/candidates/${candidateId}`);
                 })
                 .catch((error) => console.log(error));
@@ -204,7 +208,7 @@ function AddEditCandidate(props) {
                                             <input type="text"
                                                 name="phone"
                                                 value={phone}
-                                                onChange={(e) => setPhone(e.target.value)} className="form-control" />
+                                                onChange={(e) => setPhone(e.target.value)} className="form-control" required />
                                         </div>
                                     </div>
                                     <div className="col-md-4 mb-4">

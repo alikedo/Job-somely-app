@@ -32,22 +32,32 @@ router.post("/upload", [isAuthenticated, fileUploader], (req, res, next) => {
 });
 
 router.post('/candidates', isAuthenticated, (req, res, next) => {
-    console.log(req.payload._id)
-    const candidateDetails = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        role: req.body.role,
-        email: req.body.email,
-        phone: req.body.phone,
-        location: req.body.location,
-        about: req.body.about,
-        skills: req.body.skills,
-        image: req.body.image,
-        linkedin: req.body.linkedin,
-        owner: req.payload._id
-    }
+    const  {
+        firstName,
+        lastName,
+        role,
+        email,
+        phone,
+        location,
+        about,
+        skills,
+        image,
+        linkedin,
+        
+    } =req.body
 
-    Candidate.create(candidateDetails)
+    console.log(req.body)
+    Candidate.create({firstName,
+        lastName,
+        role,
+        email,
+        phone,
+        location,
+        about,
+        skills,
+        image,
+        linkedin,
+        owner: req.payload._id})
         .then(response => {
             let promise1 = User.findByIdAndUpdate(response.owner, { "candidate": response._id }, { new: true });
             let promise2 = Candidate.findById(response._id);

@@ -18,7 +18,7 @@ function AddJob(props) {
 
     const getCompany = () => {
         axios
-            .get(`${process.env.REACT_APP_API_URL}/mycompany`,
+            .get(`${process.env.REACT_APP_API_URL}/api/mycompany`,
                 { headers: { Authorization: `Bearer ${storedToken}` } })
             .then((response) => {
                 const oneCompany = response.data;
@@ -46,7 +46,7 @@ function AddJob(props) {
 
         axios
             .post(
-                `${process.env.REACT_APP_API_URL}/jobs`,
+                `${process.env.REACT_APP_API_URL}/api/jobs`,
                 requestBody,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
