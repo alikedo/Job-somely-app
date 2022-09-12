@@ -19,7 +19,7 @@ function EditJobPage(props) {
 
     useEffect(() => {
         axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/jobs/${jobId}`,
+            .get(`${process.env.REACT_APP_API_URL}/api/jobs/${jobId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then((response) => {
@@ -47,7 +47,7 @@ function EditJobPage(props) {
         // Make a PUT request to update the job
         axios
             .put(
-                `${process.env.REACT_APP_API_URL}/jobs/${jobId}`,
+                `${process.env.REACT_APP_API_URL}/api/jobs/${jobId}`,
                 requestBody,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
@@ -62,7 +62,7 @@ function EditJobPage(props) {
         // Make a DELETE request to delete the job
         axios
             .delete(
-                `${process.env.REACT_APP_API_URL}/jobs/${jobId}`,
+                `${process.env.REACT_APP_API_URL}/api/jobs/${jobId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then(() => {

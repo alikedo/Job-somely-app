@@ -14,7 +14,7 @@ function CompaniesListPage() {
 
   const getAllCompanies = () => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/companies`,
+      .get(`${process.env.REACT_APP_API_URL}/api/companies`,
         { headers: { Authorization: `Bearer ${storedToken}` } }
       )
       .then((response) => setCompanies(response.data))
