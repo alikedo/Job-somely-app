@@ -8,7 +8,7 @@ function IsCandidate( { children } ) {
 
   if (isLoading) return <p><img src={'https://c.tenor.com/y6RVjd7Dz8sAAAAC/loading-waiting.gif'}/></p>;
  
-  if (!isLoggedIn || user.type!=='candidate') {
+  if (!isLoggedIn || user.userType!=='candidate') {
 
     return <Navigate to="/" />;
   } else {
