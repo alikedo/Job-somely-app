@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { useNavigate,NavLink, useSearchParams } from "react-router-dom";
 import { Card, Button, Image, Form } from 'react-bootstrap';
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context"
@@ -9,9 +9,12 @@ import { AuthContext } from "../context/auth.context"
 function JobsListPage() {
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const storedToken = localStorage.getItem("authToken");
   const { isLoggedIn } = useContext(AuthContext);
+  const title = searchParams.get("q");
 
   const getAllJobs = () => {
     axios
@@ -27,16 +30,24 @@ function JobsListPage() {
     // eslint-disable-next-line
   }, [storedToken]);
 
-  const searchJob = () => {
-    axios.get(process.env.REACT_APP_API_URL + `/api/searchjob?q=${query}`,
-      { headers: { Authorization: `Bearer ${storedToken}` } })
-      .then(response => {
-        setJobs(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const searchJob = async () => {
+    if(title!==''){await
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/jobs`,
+        { headers: { Authorization: `Bearer ${storedToken}` } }
+      )
+      .then( (response) => {
+        setJobs(response.data.filter(job => { return job.title.toLowerCase().includes(title.toLowerCase())}))})
+      .catch((error) => console.log(error));}else{getAllJobs();}
   };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    navigate(`/jobs/?q=${query}`)
+
+    searchJob();
+    
+    };
 
   return (
     <div className="JobsListPage">
@@ -86,7 +97,7 @@ function JobsListPage() {
         </div><hr />
       </div>
       <div className="container mt-5">
-        <Form className="d-flex">
+        <Form className="d-flex" onSubmit={handleFormSubmit}>
           <Form.Control
             type="search"
             value={query}
@@ -95,7 +106,7 @@ function JobsListPage() {
             aria-label="Search"
             onChange={(e) => { setQuery(e.target.value) }}
           />
-          <Button variant="outline-success" onClick={searchJob}>Search</Button>
+          <Button variant="outline-success" type='submit'>Search</Button>
         </Form>
         <div className="album my-5 pb-2 px-4 bg-primary bg-opacity-25 shadow-lg">
 
