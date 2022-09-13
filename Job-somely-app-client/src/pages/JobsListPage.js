@@ -26,23 +26,21 @@ function JobsListPage() {
   };
 
   useEffect(() => {
-    getAllJobs();
-    // eslint-disable-next-line
-  }, [storedToken]);
-
-  const handleFormSubmit =  (e) => {
-    e.preventDefault();
     navigate(`/jobs/?q=${query}`);
-
     if(title!==''){
       axios
         .get(`${process.env.REACT_APP_API_URL}/api/jobs`,
           { headers: { Authorization: `Bearer ${storedToken}` } }
         )
-        .then( (response) => {
+        .then( (response) => { 
           setJobs(response.data.filter(job => { return job.title.toLowerCase().includes(title.toLowerCase())}))})
         .catch((error) => console.log(error));}else{getAllJobs();}
-    
+  }, [storedToken, title]);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    navigate(`/jobs/?q=${query}`);
+    setSearchParams(title)
     };
 
   return (
@@ -101,7 +99,7 @@ function JobsListPage() {
             placeholder="Search Job"
             className="me-2 border border-2"
             aria-label="Search"
-            onChange={(e) => { setQuery(e.target.value) }}
+            onChange={(e) => { setQuery(e.target.value)}}
           />
 
           <Button variant="outline-success" type='submit' style={{ borderRadius: "40px", color: 'rgb(41, 52, 98)', border: "solid", backgroundColor: 'rgb(255, 225, 148)' }}>Search</Button>
