@@ -16,6 +16,10 @@ import AddEditCandidate from "./components/AddEditCandidate";
 import AddEditCompany from "./components/AddEditCompany";
 import AddJob from "./components/AddJob";
 import EditJobPage from "./pages/EditJobPage";
+import IsPrivate from "./components/isPrivate";
+import IsCompany from "./components/isCompany";
+import IsCandidate from "./components/isCandidate";
+import IsAnon from "./components/isAnon";
 
 
 function App() {
@@ -26,17 +30,17 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/jobs" element={<JobsListPage />} />
-        <Route path="/jobs/:jobId" element={<JobDetailsPage />} />
-        <Route path="/companies" element={<CompaniesListPage />} />
-        <Route path="/companies/:companyId" element={<CompanyDetailsPage />} />
-        <Route path="/candidates" element={<CandidatesListPage />} />
-        <Route path="/candidates/:candidateId" element={<CandidateDetailsPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/myprofile" element={<AddEditCandidate />} />
-        <Route path="/mycompany" element={<AddEditCompany />} />
-        <Route path="/jobs/create" element={<AddJob />} />
-        <Route path="/jobs/edit/:jobId" element={<EditJobPage />} />
+        <Route path="/jobs/:jobId" element={<IsPrivate><JobDetailsPage /></IsPrivate>} />
+        <Route path="/companies" element={<IsPrivate><CompaniesListPage /></IsPrivate>} />
+        <Route path="/companies/:companyId" element={<IsPrivate><CompanyDetailsPage /></IsPrivate>} />
+        <Route path="/candidates" element={<IsCompany><CandidatesListPage /></IsCompany>} />
+        <Route path="/candidates/:candidateId" element={<IsPrivate><CandidateDetailsPage /></IsPrivate>} />
+        <Route path="/signup" element={<IsAnon><SignupPage /></IsAnon>} />
+        <Route path="/login" element={<IsAnon><LoginPage /></IsAnon>} />
+        <Route path="/myprofile" element={<IsCandidate><AddEditCandidate /></IsCandidate>} />
+        <Route path="/mycompany" element={<IsCompany><AddEditCompany /></IsCompany>} />
+        <Route path="/jobs/create" element={<IsCompany><AddJob /></IsCompany>} />
+        <Route path="/jobs/edit/:jobId" element={<IsCompany><EditJobPage /></IsCompany>} />
       </Routes>
       <Footer />
     </div>
