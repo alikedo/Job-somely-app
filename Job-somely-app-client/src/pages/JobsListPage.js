@@ -107,12 +107,8 @@ function JobsListPage() {
             aria-label="Search"
             onChange={(e) => { setQuery(e.target.value) }}
           />
-<<<<<<< HEAD
-          <Button variant="outline-success" type='submit'>Search</Button>
-=======
-          <Button variant="outline-success" onClick={searchJob} style={{ borderRadius: "40px", color: 'rgb(41, 52, 98)', border: "solid", backgroundColor: 'rgb(255, 225, 148)' }}>Search</Button>
 
->>>>>>> ce919ad35d07470059f4feef904e89ed7b7e4ffc
+          <Button variant="outline-success" type='submit' style={{ borderRadius: "40px", color: 'rgb(41, 52, 98)', border: "solid", backgroundColor: 'rgb(255, 225, 148)' }}>Search</Button>
         </Form>
         <div className="album my-5 pb-2 px-4 shadow-lg">
 
