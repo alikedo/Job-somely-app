@@ -30,22 +30,18 @@ function JobsListPage() {
     // eslint-disable-next-line
   }, [storedToken]);
 
-  const searchJob = async () => {
-    if(title!==''){await
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/api/jobs`,
-        { headers: { Authorization: `Bearer ${storedToken}` } }
-      )
-      .then( (response) => {
-        setJobs(response.data.filter(job => { return job.title.toLowerCase().includes(title.toLowerCase())}))})
-      .catch((error) => console.log(error));}else{getAllJobs();}
-  };
+  const handleFormSubmit =  (e) => {
+    e.preventDefault();
+    navigate(`/jobs/?q=${query}`);
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault()
-    navigate(`/jobs/?q=${query}`)
-
-    searchJob();
+    if(title!==''){
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/api/jobs`,
+          { headers: { Authorization: `Bearer ${storedToken}` } }
+        )
+        .then( (response) => {
+          setJobs(response.data.filter(job => { return job.title.toLowerCase().includes(title.toLowerCase())}))})
+        .catch((error) => console.log(error));}else{getAllJobs();}
     
     };
 
