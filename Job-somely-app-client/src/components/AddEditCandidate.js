@@ -25,32 +25,12 @@ function AddEditCandidate(props) {
     const navigate = useNavigate();
 
     const storedToken = localStorage.getItem("authToken");
-
-
-    const handleFileUpload = (e) => {
-        // console.log("The file to be uploaded is: ", e.target.files[0]);
-
-        const uploadData = new FormData();
-
-        // imageUrl => this name has to be the same as in the model since we pass
-        // req.body to .create() method when creating a new movie in '/api/movies' POST route
-        uploadData.append("image", e.target.files[0]);
-
-        axios
-            .post(`${process.env.REACT_APP_API_URL}/api/upload`, uploadData,
-                { headers: { Authorization: `Bearer ${storedToken}` } })
-            .then(response => {
-                // console.log("response is: ", response);
-                // response carries "fileUrl" which we can use to update the state
-                setImage(response.data.fileUrl);
-            })
-            .catch(err => console.log("Error while uploading the file: ", err));
-    };
+    const { isLoading } = useContext(AuthContext);
 
 
     const getCandidate = () => {
         axios
-            .get(`${process.env.REACT_APP_API_URL}/api/myprofile`,
+            .get(`https://awful-red-kimono.cyclic.app/api/myprofile`,
                 { headers: { Authorization: `Bearer ${storedToken}` } })
             .then((response) => {
                 const oneCandidate = response.data;
@@ -101,7 +81,7 @@ function AddEditCandidate(props) {
        if (candidateId == '') {
            await axios
                 .post(
-                    `${process.env.REACT_APP_API_URL}/api/candidates`,
+                    `https://awful-red-kimono.cyclic.app/api/candidates`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
@@ -114,7 +94,7 @@ function AddEditCandidate(props) {
         } else {
            await axios
                 .put(
-                    `${process.env.REACT_APP_API_URL}/api/candidates/${candidateId}`,
+                    `https://awful-red-kimono.cyclic.app/api/candidates/${candidateId}`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
@@ -131,7 +111,7 @@ function AddEditCandidate(props) {
         // Make a DELETE request to delete the candidate
         axios
             .delete(
-                `${process.env.REACT_APP_API_URL}/api/candidates/${candidateId}`,
+                `https://awful-red-kimono.cyclic.app/api/candidates/${candidateId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then(() => {
@@ -140,7 +120,7 @@ function AddEditCandidate(props) {
             })
             .catch((err) => console.log(err));
     };
-
+    if (isLoading) return <p><img src={'https://c.tenor.com/y6RVjd7Dz8sAAAAC/loading-waiting.gif'}/></p>;
     return (
         <div className="text-center">
 
@@ -184,10 +164,10 @@ function AddEditCandidate(props) {
                                     <div className="form-outline mb-4">
                                         <div className="form-outline">
                                             <label className="form-label">Profile Picture</label>
-                                            <input type="file"
+                                            <input type="text"
                                                 name="image"
 
-                                                onChange={(e) => handleFileUpload(e)} className="form-control-file form-control"
+                                                onChange={(e) => setImage(e.target.value)} className="form-control-file form-control"
                                                 accept="image/png, image/jpeg, image/jpg" required />
                                         </div>
                                     </div>
@@ -213,7 +193,7 @@ function AddEditCandidate(props) {
                                     </div>
                                     <div className="col-md-4 mb-4">
                                         <div className="form-outline">
-                                            <label className="form-label">Current Location</label>
+                                            <label className="form-label" required>Current Location</label>
                                             <input type="text"
                                                 name="location"
                                                 value={location}
