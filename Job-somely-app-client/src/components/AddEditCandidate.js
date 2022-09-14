@@ -166,9 +166,7 @@ function AddEditCandidate(props) {
                                             <label className="form-label">Profile Picture</label>
                                             <input type="text"
                                                 name="image"
-
-                                                onChange={(e) => setImage(e.target.value)} className="form-control-file form-control"
-                                                accept="image/png, image/jpeg, image/jpg" required />
+                                                onChange={(e) => setImage(e.target.value)} className="form-control-file form-control" required />
                                         </div>
                                     </div>
                                 </div>
