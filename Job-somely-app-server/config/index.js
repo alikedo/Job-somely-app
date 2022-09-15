@@ -21,12 +21,24 @@ module.exports = (app) => {
   app.set("trust proxy", 1);
 
   app.use(
-    cors({
-      credentials: true,
-      origin: process.env.ORIGIN || "http://localhost:3000",
-      optionSuccessStatus:200,
-    })
+    cors(
+    //   {
+    //   // credentials: true,
+    //   // origin: process.env.ORIGIN || "http://localhost:3000",
+    //   // optionSuccessStatus:200,
+    // }
+    )
   );
+
+  app.use((req, res, next) =>{
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE') // Browser send
+    // res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    if(req.method === 'OPTIONS') {
+        return res.sendStatus(200)
+    }
+    return next()
+  })
 
   // In development environment the app logs
   app.use(logger("dev"));

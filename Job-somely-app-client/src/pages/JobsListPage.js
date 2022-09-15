@@ -13,12 +13,12 @@ function JobsListPage() {
   const navigate = useNavigate();
 
   const storedToken = localStorage.getItem("authToken");
-  const { isLoggedIn } = useContext(AuthContext);
+  
   const title = searchParams.get("q");
 
   const getAllJobs = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/jobs`,
+      .get(`https://jobsomely.herokuapp.com/api/jobs`,
         { headers: { Authorization: `Bearer ${storedToken}` } }
       )
       .then((response) => setJobs(response.data))
@@ -29,7 +29,7 @@ function JobsListPage() {
     navigate(`/jobs/?q=${query}`);
     if(title!==''){
       axios
-        .get(`${process.env.REACT_APP_API_URL}/api/jobs`,
+        .get(`https://jobsomely.herokuapp.com/api/jobs`,
           { headers: { Authorization: `Bearer ${storedToken}` } }
         )
         .then( (response) => { 
@@ -42,6 +42,8 @@ function JobsListPage() {
     navigate(`/jobs/?q=${query}`);
     setSearchParams(title)
     };
+
+    const { isLoggedIn } = useContext(AuthContext);
 
   return (
 

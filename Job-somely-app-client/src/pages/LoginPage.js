@@ -22,7 +22,7 @@ function LoginPage(props) {
 
         const requestBody = { username, password };
 
-        axios.post(`${process.env.REACT_APP_API_URL}/api/login`, requestBody)
+        axios.post(`https://jobsomely.herokuapp.com/api/login`, requestBody)
             .then((response) => {
 
                 console.log('JWT token', response.data.authToken);
@@ -88,8 +88,10 @@ function LoginPage(props) {
                                                 <div className="pt-1 mb-4">
                                                     <Button className=" btn-lg w-100" type="submit" style={{ borderRadius: "40px", color: 'rgb(255, 225, 148)', border: "solid", backgroundColor: 'rgb(41, 52, 98)' }} >Login</Button>
                                                 </div>
+
                                                 <p className="mb-5 pb-lg-2" style={{ color: 'rgb(34, 28, 148)' }} >Don't have an account?
-                                                    <NavLink to={"/login"}> Register here</NavLink></p>
+                                                    <NavLink to={"/signup"}> Register here</NavLink></p>
+
                                                 <div>
                                                     <NavLink to="#!" className="small text-muted" style={{ color: 'rgb(34, 28, 148)' }}>Terms of use.</NavLink>
                                                     <NavLink to="#!" className="small text-muted" style={{ color: 'rgb(34, 28, 148)' }}>Privacy policy</NavLink>

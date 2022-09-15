@@ -18,39 +18,33 @@ function AddEditCandidate(props) {
     const [location, setLocation] = useState("");
     const [about, setAbout] = useState("");
     const [skills, setSkills] = useState("");
-    const [image, setImage] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
     const [linkedin, setLinkedin] = useState("");
 
     const [errorMsg, setErrorMsg] = useState("");
     const navigate = useNavigate();
 
     const storedToken = localStorage.getItem("authToken");
-
+    const { isLoading } = useContext(AuthContext);
 
     const handleFileUpload = (e) => {
-        // console.log("The file to be uploaded is: ", e.target.files[0]);
-
+        const storedToken = localStorage.getItem('authToken');
         const uploadData = new FormData();
+        uploadData.append("imageUrl", e.target.files[0]);
 
-        // imageUrl => this name has to be the same as in the model since we pass
-        // req.body to .create() method when creating a new movie in '/api/movies' POST route
-        uploadData.append("image", e.target.files[0]);
-
-        axios
-            .post(`${process.env.REACT_APP_API_URL}/api/upload`, uploadData,
-                { headers: { Authorization: `Bearer ${storedToken}` } })
-            .then(response => {
-                // console.log("response is: ", response);
-                // response carries "fileUrl" which we can use to update the state
-                setImage(response.data.fileUrl);
-            })
-            .catch(err => console.log("Error while uploading the file: ", err));
-    };
-
+    return axios.post(`https://jobsomely.herokuapp.com/api/upload`, uploadData, { headers: { Authorization: `Bearer ${storedToken}` } })
+          .then(res => res.data)
+          .then(response => {
+            
+            // response carries "fileUrl" which we can use to update the state
+            setImageUrl(response.fileUrl);
+          })
+          .catch(err => console.log("Error while uploading the file: ", err));
+  };
 
     const getCandidate = () => {
         axios
-            .get(`${process.env.REACT_APP_API_URL}/api/myprofile`,
+            .get(`https://jobsomely.herokuapp.com/api/myprofile`,
                 { headers: { Authorization: `Bearer ${storedToken}` } })
             .then((response) => {
                 const oneCandidate = response.data;
@@ -65,7 +59,7 @@ function AddEditCandidate(props) {
                 setLocation(oneCandidate.location);
                 setAbout(oneCandidate.about);
                 setSkills(oneCandidate.skills);
-                setImage(oneCandidate.image);
+                setImageUrl(oneCandidate.imageUrl);
                 setLinkedin(oneCandidate.linkedin)
             })
             .catch((error) => console.log(error));
@@ -94,14 +88,14 @@ function AddEditCandidate(props) {
             location,
             about,
             skills,
-            image,
+            imageUrl: imageUrl,
             linkedin
         }
         console.log(requestBody)
         if (candidateId == '') {
             await axios
                 .post(
-                    `${process.env.REACT_APP_API_URL}/api/candidates`,
+                    `https://jobsomely.herokuapp.com/api/candidates`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
@@ -114,7 +108,7 @@ function AddEditCandidate(props) {
         } else {
             await axios
                 .put(
-                    `${process.env.REACT_APP_API_URL}/api/candidates/${candidateId}`,
+                    `https://jobsomely.herokuapp.com/api/candidates/${candidateId}`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
@@ -131,7 +125,7 @@ function AddEditCandidate(props) {
         // Make a DELETE request to delete the candidate
         axios
             .delete(
-                `${process.env.REACT_APP_API_URL}/api/candidates/${candidateId}`,
+                `https://jobsomely.herokuapp.com/api/candidates/${candidateId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then(() => {
@@ -140,7 +134,7 @@ function AddEditCandidate(props) {
             })
             .catch((err) => console.log(err));
     };
-
+    if (isLoading) return <p><img src={'https://c.tenor.com/y6RVjd7Dz8sAAAAC/loading-waiting.gif'}/></p>;
     return (
         <div className="text-center" style={{ backgroundColor: 'rgb(234, 243, 248) ' }}>
 
@@ -185,10 +179,12 @@ function AddEditCandidate(props) {
                                         <div className="form-outline">
                                             <label className="form-label" style={{ color: 'rgb(34, 28, 148)' }}>Profile Picture</label>
                                             <input type="file"
-                                                name="image"
-
-                                                onChange={(e) => handleFileUpload(e)} className="form-control-file form-control"
-                                                accept="image/png, image/jpeg, image/jpg" required />
+                                                name="imageUrl"
+                                                onChange={(e) => handleFileUpload(e)}
+                                                // value={image}
+                                                // pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)(.jpg|.png|.gif)"
+                                                // onChange={(e) => setImage(e.target.value)} 
+                                                className="form-control-file form-control" required />
                                         </div>
                                     </div>
                                 </div>
