@@ -53,7 +53,7 @@ function JobsListPage() {
 
         <div className="my-5">
           <h2 className="mb-4 fw-bold" style={{ color: 'rgb(34, 28, 148)' }}>Job Opportunities</h2>
-          <p className=" mb-0 " style={{ color: 'rgb(71, 19, 33)' }}>Looking for the next step in your career? Maybe it is the first step. Wherever you are in your life, you are in the correct place.</p>
+          <p className=" mb-0 " style={{ color: 'rgb(71, 19, 33)' }}>An online job platform that targets your jobs to the right people..</p>
         </div> <hr />
 
         <div className="row my-5" >
