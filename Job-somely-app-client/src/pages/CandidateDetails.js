@@ -17,7 +17,7 @@ function CandidateDetailsPage(props) {
     const getCandidate = () => {
         setMessage("");
         axios
-            .get(`https://awful-red-kimono.cyclic.app/api/candidates/${candidateId}`,
+            .get(`https://jobsomely.herokuapp.com/api/candidates/${candidateId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then((response) => {
@@ -61,7 +61,7 @@ function CandidateDetailsPage(props) {
                             <div className="container dark-grey-text mt-2 px-4 bg-light bg-opacity-25">
                                 <div className="row wow fadeIn">
                                     <div className="col-md-3">
-                                        <Image src={candidate.image} alt="candidate" className="rounded-circle rounded shadow-lg img-fluid w-100" />
+                                        <Image src={candidate.imageUrl} alt="candidate" className="rounded-circle rounded shadow-lg img-fluid w-100" />
                                     </div>
                                     <div className="text-start col-md-5 pt-5">
                                         <div className="p-4">

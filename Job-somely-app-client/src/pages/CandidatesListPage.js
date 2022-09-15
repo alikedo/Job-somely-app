@@ -15,7 +15,7 @@ function CandidatesListPage() {
 
   const getAllCandidates = () => {
     axios
-      .get(`https://awful-red-kimono.cyclic.app/api/candidates`,
+      .get(`https://jobsomely.herokuapp.com/api/candidates`,
         { headers: { Authorization: `Bearer ${storedToken}` } }
       )
       .then((response) =>{
@@ -56,7 +56,7 @@ function CandidatesListPage() {
               return (
                 <div className="Candidates col" key={candidate._id} >
                   <Card className="pagecard shadow-lg" >
-                    <Card.Img variant="top" className="rounded-circle rounded m-auto my-2" style={{ width: '120px' }} src={candidate.image} />
+                    <Card.Img variant="top" className="rounded-circle rounded m-auto my-2" style={{ width: '120px' }} src={candidate.imageUrl} />
                     <Card.Header className="fw-bold" as="h5">{candidate.firstName} {candidate.lastName}</Card.Header>
                     <Card.Body>
                       <Card.Title>Primary Role:</Card.Title>

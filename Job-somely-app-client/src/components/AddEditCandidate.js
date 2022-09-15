@@ -18,7 +18,7 @@ function AddEditCandidate(props) {
     const [location, setLocation] = useState("");
     const [about, setAbout] = useState("");
     const [skills, setSkills] = useState("");
-    const [image, setImage] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
     const [linkedin, setLinkedin] = useState("");
 
     const [errorMsg, setErrorMsg] = useState("");
@@ -27,10 +27,24 @@ function AddEditCandidate(props) {
     const storedToken = localStorage.getItem("authToken");
     const { isLoading } = useContext(AuthContext);
 
+    const handleFileUpload = (e) => {
+        const storedToken = localStorage.getItem('authToken');
+        const uploadData = new FormData();
+        uploadData.append("imageUrl", e.target.files[0]);
+
+    return axios.post(`https://jobsomely.herokuapp.com/api/upload`, uploadData, { headers: { Authorization: `Bearer ${storedToken}` } })
+          .then(res => res.data)
+          .then(response => {
+            
+            // response carries "fileUrl" which we can use to update the state
+            setImageUrl(response.fileUrl);
+          })
+          .catch(err => console.log("Error while uploading the file: ", err));
+  };
 
     const getCandidate = () => {
         axios
-            .get(`https://awful-red-kimono.cyclic.app/api/myprofile`,
+            .get(`https://jobsomely.herokuapp.com/api/myprofile`,
                 { headers: { Authorization: `Bearer ${storedToken}` } })
             .then((response) => {
                 const oneCandidate = response.data;
@@ -45,7 +59,7 @@ function AddEditCandidate(props) {
                 setLocation(oneCandidate.location);
                 setAbout(oneCandidate.about);
                 setSkills(oneCandidate.skills);
-                setImage(oneCandidate.image);
+                setImageUrl(oneCandidate.imageUrl);
                 setLinkedin(oneCandidate.linkedin)
             })
             .catch((error) => console.log(error));
@@ -74,14 +88,14 @@ function AddEditCandidate(props) {
             location,
             about,
             skills,
-            image,
+            imageUrl: imageUrl,
             linkedin
         }
         console.log(requestBody)
        if (candidateId == '') {
            await axios
                 .post(
-                    `https://awful-red-kimono.cyclic.app/api/candidates`,
+                    `https://jobsomely.herokuapp.com/api/candidates`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
@@ -94,7 +108,7 @@ function AddEditCandidate(props) {
         } else {
            await axios
                 .put(
-                    `https://awful-red-kimono.cyclic.app/api/candidates/${candidateId}`,
+                    `https://jobsomely.herokuapp.com/api/candidates/${candidateId}`,
                     requestBody,
                     { headers: { Authorization: `Bearer ${storedToken}` } }
                 )
@@ -111,7 +125,7 @@ function AddEditCandidate(props) {
         // Make a DELETE request to delete the candidate
         axios
             .delete(
-                `https://awful-red-kimono.cyclic.app/api/candidates/${candidateId}`,
+                `https://jobsomely.herokuapp.com/api/candidates/${candidateId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then(() => {
@@ -164,10 +178,13 @@ function AddEditCandidate(props) {
                                     <div className="form-outline mb-4">
                                         <div className="form-outline">
                                             <label className="form-label">Profile Picture</label>
-                                            <input type="text"
-                                                name="image"
-                                                value={image}
-                                                onChange={(e) => setImage(e.target.value)} className="form-control-file form-control" required />
+                                            <input type="file"
+                                                name="imageUrl"
+                                                onChange={(e) => handleFileUpload(e)}
+                                                // value={image}
+                                                // pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)(.jpg|.png|.gif)"
+                                                // onChange={(e) => setImage(e.target.value)} 
+                                                className="form-control-file form-control" required />
                                         </div>
                                     </div>
                                 </div>

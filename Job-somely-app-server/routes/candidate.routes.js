@@ -6,7 +6,19 @@ const User = require('../models/User.model');
 
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 
+const fileUploader = require("../config/cloudinary.config");
 
+router.post("/upload", fileUploader.single('imageUrl'), (req, res, next) => {
+    console.log("file is: ", req.file)
+
+    if (!req.file) {
+        res.status(400).json({ message: "No file uploaded!" });
+        return;
+    }
+
+    // Get the URL of the uploaded file and send it as a response.
+    res.json({ fileUrl: req.file.path });
+});
 
 //READ list of candidates
 router.get('/candidates', (req, res, next) => {
@@ -27,7 +39,7 @@ router.post('/candidates', isAuthenticated, (req, res, next) => {
         location,
         about,
         skills,
-        image,
+        imageUrl,
         linkedin,
         
     } =req.body
@@ -41,7 +53,7 @@ router.post('/candidates', isAuthenticated, (req, res, next) => {
         location,
         about,
         skills,
-        image,
+        imageUrl,
         linkedin,
         owner: req.payload._id})
         .then(response => {
@@ -134,7 +146,7 @@ router.get('/myprofile', isAuthenticated, (req, res, next) => {
                     location: "",
                     about: "",
                     skills: "",
-                    image: "",
+                    imageUrl: "",
                     linkedin: "",
                     owner: ownerId
                 }
