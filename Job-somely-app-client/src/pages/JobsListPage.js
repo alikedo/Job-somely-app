@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { useNavigate,NavLink, useSearchParams } from "react-router-dom";
 import { Card, Button, Image, Form } from 'react-bootstrap';
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context"
@@ -9,13 +9,16 @@ import { AuthContext } from "../context/auth.context"
 function JobsListPage() {
   const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const storedToken = localStorage.getItem("authToken");
-  const { isLoggedIn } = useContext(AuthContext);
+  
+  const title = searchParams.get("q");
 
   const getAllJobs = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/jobs`,
+      .get(`https://jobsomely.herokuapp.com/api/jobs`,
         { headers: { Authorization: `Bearer ${storedToken}` } }
       )
       .then((response) => setJobs(response.data))
@@ -23,20 +26,24 @@ function JobsListPage() {
   };
 
   useEffect(() => {
-    getAllJobs();
-    // eslint-disable-next-line
-  }, [storedToken]);
+    navigate(`/jobs/?q=${query}`);
+    if(title!==''){
+      axios
+        .get(`https://jobsomely.herokuapp.com/api/jobs`,
+          { headers: { Authorization: `Bearer ${storedToken}` } }
+        )
+        .then( (response) => { 
+          setJobs(response.data.filter(job => { return job.title.toLowerCase().includes(title.toLowerCase())}))})
+        .catch((error) => console.log(error));}else{getAllJobs();}
+  }, [storedToken, title]);
 
-  const searchJob = () => {
-    axios.get(process.env.REACT_APP_API_URL + `/api/searchjob?q=${query}`,
-      { headers: { Authorization: `Bearer ${storedToken}` } })
-      .then(response => {
-        setJobs(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    navigate(`/jobs/?q=${query}`);
+    setSearchParams(title)
+    };
+
+    const { isLoggedIn } = useContext(AuthContext);
 
   return (
 
@@ -87,17 +94,17 @@ function JobsListPage() {
         </div><hr />
       </div>
       <div className="container mt-5">
-        <Form className="d-flex">
+        <Form className="d-flex" onSubmit={handleFormSubmit}>
           <Form.Control
             type="search"
             value={query}
             placeholder="Search Job"
             className="me-2 border border-2"
             aria-label="Search"
-            onChange={(e) => { setQuery(e.target.value) }}
+            onChange={(e) => { setQuery(e.target.value)}}
           />
-          <Button variant="outline-success" onClick={searchJob} style={{ borderRadius: "40px", color: 'rgb(41, 52, 98)', border: "solid", backgroundColor: 'rgb(255, 225, 148)' }}>Search</Button>
 
+          <Button variant="outline-success" type='submit' style={{ borderRadius: "40px", color: 'rgb(41, 52, 98)', border: "solid", backgroundColor: 'rgb(255, 225, 148)' }}>Search</Button>
         </Form>
         <div className="album my-5 pb-2 px-4 shadow-lg" style={{ backgroundColor: 'rgb(255, 225, 148)' }}>
 

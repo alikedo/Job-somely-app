@@ -17,7 +17,7 @@ function CandidateDetailsPage(props) {
     const getCandidate = () => {
         setMessage("");
         axios
-            .get(`${process.env.REACT_APP_API_URL}/api/candidates/${candidateId}`,
+            .get(`https://jobsomely.herokuapp.com/api/candidates/${candidateId}`,
                 { headers: { Authorization: `Bearer ${storedToken}` } }
             )
             .then((response) => {
@@ -54,6 +54,7 @@ function CandidateDetailsPage(props) {
                         </div>
                     </div>
                 </div>}
+
             {
                 candidate && (
                     <div className="mx-5">
@@ -62,7 +63,7 @@ function CandidateDetailsPage(props) {
                                 <div className="container dark-grey-text mt-2 px-4 5">
                                     <div className="row wow fadeIn">
                                         <div className="col-md-3">
-                                            <Image src={candidate.image} alt="candidate" className="rounded-circle rounded shadow-lg img-fluid w-100" />
+                                            <Image src={candidate.imageUrl} alt="candidate" className="rounded-circle rounded shadow-lg img-fluid w-100" />
                                         </div>
                                         <div className="text-start col-md-5 pt-5">
                                             <div className="p-4">
@@ -71,6 +72,7 @@ function CandidateDetailsPage(props) {
                                                 </div>
                                                 <div className="lead">
                                                     <p style={{ color: 'rgb(71, 19, 33)' }}><strong style={{ color: 'rgb(34, 28, 148)' }}>Primary Role:</strong> {candidate.role}</p>
+
 
                                                     <p style={{ color: 'rgb(71, 19, 33)' }}><strong style={{ color: 'rgb(34, 28, 148)' }}>Skills:</strong> {candidate.skills}</p>
                                                     <p style={{ color: 'rgb(71, 19, 33)' }}><strong style={{ color: 'rgb(34, 28, 148)' }}>{candidate.firstName} {candidate.lastName}'s </strong> <a target="_blank" href={`${candidate.linkedin}`} > LinkedIn Profile</a></p>

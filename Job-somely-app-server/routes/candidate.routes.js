@@ -8,19 +8,8 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 const fileUploader = require("../config/cloudinary.config");
 
-
-//READ list of candidates
-router.get('/candidates', (req, res, next) => {
-    Candidate.find()
-        .then(allCandidates => {
-            res.json(allCandidates)
-        })
-        .catch(err => res.json(err));
-});
-
-//CREATE new candidate
-router.post("/upload", [isAuthenticated, fileUploader], (req, res, next) => {
-    // console.log("file is: ", req.file)
+router.post("/upload", fileUploader.single('imageUrl'), (req, res, next) => {
+    console.log("file is: ", req.file)
 
     if (!req.file) {
         res.status(400).json({ message: "No file uploaded!" });
@@ -29,6 +18,15 @@ router.post("/upload", [isAuthenticated, fileUploader], (req, res, next) => {
 
     // Get the URL of the uploaded file and send it as a response.
     res.json({ fileUrl: req.file.path });
+});
+
+//READ list of candidates
+router.get('/candidates', (req, res, next) => {
+    Candidate.find()
+        .then(allCandidates => {
+            res.json(allCandidates)
+        })
+        .catch(err => res.json(err));
 });
 
 router.post('/candidates', isAuthenticated, (req, res, next) => {
@@ -41,7 +39,7 @@ router.post('/candidates', isAuthenticated, (req, res, next) => {
         location,
         about,
         skills,
-        image,
+        imageUrl,
         linkedin,
         
     } =req.body
@@ -55,7 +53,7 @@ router.post('/candidates', isAuthenticated, (req, res, next) => {
         location,
         about,
         skills,
-        image,
+        imageUrl,
         linkedin,
         owner: req.payload._id})
         .then(response => {
@@ -148,7 +146,7 @@ router.get('/myprofile', isAuthenticated, (req, res, next) => {
                     location: "",
                     about: "",
                     skills: "",
-                    image: "",
+                    imageUrl: "",
                     linkedin: "",
                     owner: ownerId
                 }

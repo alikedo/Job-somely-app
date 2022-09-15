@@ -20,6 +20,7 @@ import IsPrivate from "./components/isPrivate";
 import IsCompany from "./components/isCompany";
 import IsCandidate from "./components/isCandidate";
 import IsAnon from "./components/isAnon";
+import ErrorPage from "./components/ErrorPage";
 
 
 function App() {
@@ -29,11 +30,11 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/jobs" element={<JobsListPage />} />
+        <Route path="/jobs/" element={<JobsListPage />} />
         <Route path="/jobs/:jobId" element={<IsPrivate><JobDetailsPage /></IsPrivate>} />
         <Route path="/companies" element={<IsPrivate><CompaniesListPage /></IsPrivate>} />
         <Route path="/companies/:companyId" element={<IsPrivate><CompanyDetailsPage /></IsPrivate>} />
-        <Route path="/candidates" element={<IsCompany><CandidatesListPage /></IsCompany>} />
+        <Route path="/candidates" element={<IsPrivate><CandidatesListPage /></IsPrivate>} />
         <Route path="/candidates/:candidateId" element={<IsPrivate><CandidateDetailsPage /></IsPrivate>} />
         <Route path="/signup" element={<IsAnon><SignupPage /></IsAnon>} />
         <Route path="/login" element={<IsAnon><LoginPage /></IsAnon>} />
@@ -41,6 +42,7 @@ function App() {
         <Route path="/mycompany" element={<IsCompany><AddEditCompany /></IsCompany>} />
         <Route path="/jobs/create" element={<IsCompany><AddJob /></IsCompany>} />
         <Route path="/jobs/edit/:jobId" element={<IsCompany><EditJobPage /></IsCompany>} />
+        <Route path="*" element={ <ErrorPage /> } />
       </Routes>
       <Footer />
     </div>

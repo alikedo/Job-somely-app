@@ -15,7 +15,7 @@ function CandidatesListPage() {
 
   const getAllCandidates = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/candidates`,
+      .get(`https://jobsomely.herokuapp.com/api/candidates`,
         { headers: { Authorization: `Bearer ${storedToken}` } }
       )
       .then((response) => {
@@ -56,9 +56,11 @@ function CandidatesListPage() {
             {candidates.map((candidate) => {
               return (
                 <div className="Candidates col" key={candidate._id} >
+
                   <Card className="pagecard shadow-lg" style={{ backgroundColor: 'rgb(234, 243, 248)' }} >
-                    <Card.Img variant="top" className="rounded-circle rounded m-auto my-2" style={{ width: '120px' }} src={candidate.image} />
+                    <Card.Img variant="top" className="rounded-circle rounded m-auto my-2" style={{ width: '120px' }} src={candidate.imageUrl} />
                     <Card.Header className="fw-bold" as="h5" style={{ color: 'rgb(34, 28, 148)' }}>{candidate.firstName} {candidate.lastName}</Card.Header>
+
                     <Card.Body>
                       <Card.Title style={{ color: 'rgb(34, 28, 148)' }}>Primary Role:</Card.Title>
                       <Card.Text style={{ color: 'rgb(71, 19, 33)' }}>
